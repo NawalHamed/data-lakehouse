@@ -1,0 +1,35 @@
+[
+    {
+      "year": 2024,
+      "age": "010",
+      "school": 2,
+      "group": 9,
+      "topic": 133500,
+      "count": 4
+    },
+    {
+      "year": 2024,
+      "age": "010",
+      "school": 3,
+      "group": 1,
+      "topic": 133500,
+      "count": 5
+    },
+    {
+      "year": 2024,
+      "age": "010",
+      "school": 3,
+      "group": 2,
+      "topic": 133500,
+      "count": 6
+    },
+    {
+      "year": 2024,
+      "age": "010",
+      "school": 3,
+      "group": 9,
+      "topic": 133500,
+      "count": 7
+    }
+  ]
+  

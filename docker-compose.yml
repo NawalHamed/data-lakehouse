@@ -1,0 +1,43 @@
+version: '3.9'
+
+services:
+  minio:
+    image: minio/minio
+    container_name: minio
+    environment:
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+    ports:
+      - "9004:9000" #this maps the S3 API to port 9004 -> with the pipeline
+      - "9005:9001" #this maps the console (web UI) to port 9005
+    command: server /data --console-address ":9001"
+    #command: server --address ":9004" --console-address ":9005" /data
+
+    volumes:
+      - minio_data:/data
+
+  spark-master:
+    image: bitnami/spark:latest
+    container_name: spark-master-minio-iceberg
+    environment:
+      - SPARK_MODE=master
+      - SPARK_SUBMIT_ARGS=--packages org.apache.iceberg:iceberg-spark3-runtime:0.12.0
+    ports:
+      - "7077:7077"
+      - "8082:8082"
+
+  spark-worker:
+    image: bitnami/spark:latest
+    container_name: spark-worker-minio-iceberg
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_SUBMIT_ARGS=--packages org.apache.iceberg:iceberg-spark3-runtime:0.12.0
+    depends_on:
+      - spark-master
+    ports:
+      - "8083:8083"
+
+volumes:
+  minio_data:
+  jupyter_data:
